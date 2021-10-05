@@ -4,6 +4,15 @@ const express = require('express');
 /*Création d'une application express*/
 const app = express();
 
+// Importation du package body-parser qui permet d'extraire l'objet JSON des requêtes POST
+const bodyParser = require('body-parser');
+
+// On importe la route dédiée aux sauces
+const sauceRoutes = require('./routes/sauce');
+
+// On importe la route dédiée aux users
+const userRoutes = require('./routes/user');
+
 // Importation du package mongoose pour se connecter à la data base mongo Db
 const mongoose = require('mongoose');
 
@@ -28,28 +37,12 @@ app.use((req, res, next) => {
     next();
 });
 
-/*DEBUT MIDDLEWARE */
-app.use((req, res, next) => {
-    console.log('Requête reçue !');
-    next();
-});
+app.use(bodyParser.json());
 
-app.use((req, res, next) => {
-    res.status(201);
-    next();
-});
+// Routes dédiées aux sauces
+app.use('/api/sauce', sauceRoutes);
 
-app.use((req, res, next) => {
-    res.json({
-        message: 'Votre requête a bien été reçue !'
-    });
-    next();
-});
-
-app.use((req, res, next) => {
-    console.log('Réponse envoyée avec succès !');
-});
-
-/*FIN MIDDLEWARE*/
+// Routes dédiées aux users
+app.use('/api/auth', userRoutes);
 
 module.exports = app;
