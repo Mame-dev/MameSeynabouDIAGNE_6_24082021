@@ -8,13 +8,15 @@ const app = express();
 const bodyParser = require('body-parser');
 
 // On importe la route dédiée aux sauces
-const sauceRoutes = require('./routes/sauce');
+const saucesRoutes = require('./routes/sauces');
 
 // On importe la route dédiée aux users
 const userRoutes = require('./routes/user');
 
 // Importation du package mongoose pour se connecter à la data base mongo Db
 const mongoose = require('mongoose');
+
+const path = require('path');
 
 //* *****Connection à la base de données mongoDB***** *//
 mongoose
@@ -39,8 +41,10 @@ app.use((req, res, next) => {
 
 app.use(bodyParser.json());
 
+app.use('/images', express.static(path.join(__dirname, 'images')));
+
 // Routes dédiées aux sauces
-app.use('/api/sauce', sauceRoutes);
+app.use('/api/sauces', saucesRoutes);
 
 // Routes dédiées aux users
 app.use('/api/auth', userRoutes);
