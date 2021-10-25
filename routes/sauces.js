@@ -21,6 +21,8 @@ router.put('/:id', auth, multer, sauceCtrl.modifySauce);
 
 router.delete('/:id', auth, sauceCtrl.deleteSauce);
 
+router.post('/:id/like', auth, sauceCtrl.likeDislikeSauce);
+
 router.get('/:id', auth, sauceCtrl.getOneSauce);
 
 // Exportation du modèle userSchema
