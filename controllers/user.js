@@ -1,5 +1,8 @@
-// Importation du package bcrypt pour hasher le mot de passe des utilisateurs
+// Importation du package "bcrypt" pour hasher le mot de passe des utilisateurs
 const bcrypt = require('bcrypt');
+
+// Importation de "crypto-js" pour chiffrer l'email
+const cryptojs = require('crypto-js');
 
 // On importe le package jsonwebtoken pour attribuer un token à un utilisateur au moment ou il se connecte
 const jwt = require('jsonwebtoken');
@@ -9,14 +12,18 @@ const User = require('../models/user');
 
 /* Création d'un nouvel utilisateur*/
 exports.signup = (req, res, next) => {
+    //Cryptage de l'email avant envoie dans la base de donnée MongoDB
+    const emailCrytoJs = cryptojs.HmacSHA256(req.body.email, "CLE_SECRETE").toString();
     //Appel de la fonction de hachage ou cryptage 'bcrypt' pour le mot de passe
+    //salt = 10 nombre de fois que sera exécuté l'algorithme de hachage
     bcrypt.hash(req.body.password, 10)
-        //Création d'un utilisateur et enregistrement dans la base de donnée
+        //Création d'un utilisateur et enregistrement dans la base de donnée MongoDB
         .then(hash => {
             const user = new User({
-                email: req.body.email,
+                email: emailCrytoJs,
                 password: hash
             });
+            //Envoie du "user" dans la base de donnée MongoDB
             user.save()
                 .then(() => res.status(201).json({
                     message: 'Utilisateur créé !'

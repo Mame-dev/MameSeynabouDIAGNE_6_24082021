@@ -18,9 +18,13 @@ const mongoose = require('mongoose');
 
 const path = require('path');
 
+//Import du package pour utiliser les variables d'environnement
+const dotenv = require('dotenv')
+const result = dotenv.config()
+
 //* *****Connection à la base de données mongoDB***** *//
 mongoose
-    .connect('mongodb+srv://mame-dev:ibPMTCMyFucQQtaQ@cluster0.pwnck.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', {
+    .connect(`mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.pwnck.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
     })
