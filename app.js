@@ -24,12 +24,12 @@ const result = dotenv.config()
 
 //* *****Connection à la base de données mongoDB***** *//
 mongoose
-    .connect(`mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.pwnck.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`, {
+    .connect(`mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_CLUSTER}.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
     })
     .then(() => console.log('Connexion à MongoDB réussie !'))
-    .catch(() => console.log('Connexion à MongoDB échouée !'));
+    .catch((error) => console.log('Connexion à MongoDB échouée !' + error));
 
 /*Ces headers permettent :
  * d'accéder à notre API depuis n'importe quelle origine ( '*' ) ;
@@ -53,4 +53,5 @@ app.use('/api/sauces', saucesRoutes);
 // Routes dédiées aux users
 app.use('/api/auth', userRoutes);
 
+// Exportation de app.js pour pouvoir y accéder depuis un autre fichier
 module.exports = app;

@@ -1,7 +1,7 @@
 // Importation du package "bcrypt" pour hasher le mot de passe des utilisateurs
 const bcrypt = require('bcrypt');
 
-// Importation de "crypto-js" pour chiffrer l'email
+// Importation de "crypto-js" pour chiffrer l'email pour protéger les données des utilisateurs et respecter le RGPD
 const cryptojs = require('crypto-js');
 
 // On importe le package jsonwebtoken pour attribuer un token à un utilisateur au moment ou il se connecte

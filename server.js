@@ -45,6 +45,8 @@ const errorHandler = error => {
 };
 
 // création d'une constante pour les appels serveur (requetes et reponses)
+// la fonction qui sera appelé à chaque requête reçue par le serveur
+// les fonctions seront dans app.js
 const server = http.createServer(app);
 
 server.on('error', errorHandler);
