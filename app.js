@@ -1,4 +1,4 @@
-/*Import de Express*/
+/*Importation de Express*/
 const express = require('express');
 
 /*Création d'une application express*/
@@ -6,6 +6,9 @@ const app = express();
 
 // Importation du package body-parser qui permet d'extraire l'objet JSON des requêtes POST
 const bodyParser = require('body-parser');
+
+// Importation du package Helmet vous aide à protéger votre application de certaines des vulnérabilités bien connues du Web en configurant de manière appropriée des en-têtes HTTP.
+const helmet = require('helmet');
 
 // On importe la route dédiée aux sauces
 const saucesRoutes = require('./routes/sauces');
@@ -16,6 +19,7 @@ const userRoutes = require('./routes/user');
 // Importation du package mongoose pour se connecter à la data base mongo Db
 const mongoose = require('mongoose');
 
+// Importation du package qui sert dans l'upload des images et permet de travailler avec les répertoires et chemin de fichier
 const path = require('path');
 
 //Import du package pour utiliser les variables d'environnement
@@ -29,7 +33,10 @@ mongoose
         useUnifiedTopology: true,
     })
     .then(() => console.log('Connexion à MongoDB réussie !'))
-    .catch((error) => console.log('Connexion à MongoDB échouée !' + error));
+    .catch(() => res.status(401).json({
+        error: new Error('Connexion à MongoDB échouée !!')
+    }))
+//.catch((error) => console.log('Connexion à MongoDB échouée !' + error));
 
 /*Ces headers permettent :
  * d'accéder à notre API depuis n'importe quelle origine ( '*' ) ;
@@ -43,8 +50,13 @@ app.use((req, res, next) => {
     next();
 });
 
+// Middleware qui permet de transformer le corp de la requête en un objet JSON utilisable
 app.use(bodyParser.json());
 
+// Helmet aide à protéger de certaines des vulnérabilités bien connues du Web en configurant de manière appropriée des en-têtes HTTP.
+app.use(helmet());
+
+// Midleware qui permet de charger les fichiers qui sont dans le repertoire images
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
 // Routes dédiées aux sauces
